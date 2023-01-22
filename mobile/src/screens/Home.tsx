@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
-import { View, Text, ScrollView, Alert } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import { useToast } from 'react-native-toast-notifications'
 
 import { api } from '../lib/axios'
 import { generateDatesFromYearBeginning } from '../utils/generate-dates-from-year-beginning'
@@ -29,6 +30,8 @@ export function Home() {
 
   const { navigate } = useNavigation()
 
+  const toast = useToast()
+
   async function fetchDataOfSummaryHabits() {
     try {
       setIsLoading(true)
@@ -38,7 +41,9 @@ export function Home() {
     } catch (error) {
       console.log(error)
 
-      Alert.alert('Ops', 'Não foi possível carregar os hábitos de cada dia.')
+      toast.show('Não foi possível carregar os hábitos de cada dia.', {
+        type: 'danger'
+      })
     } finally {
       setIsLoading(false)
     }

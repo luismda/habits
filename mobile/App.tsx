@@ -1,6 +1,7 @@
 import './src/lib/dayjs'
 
 import { StatusBar } from 'react-native'
+import { ToastProvider } from 'react-native-toast-notifications'
 import {
   useFonts,
   Inter_400Regular,
@@ -8,6 +9,7 @@ import {
   Inter_700Bold,
   Inter_800ExtraBold
 } from '@expo-google-fonts/inter'
+import colors from 'tailwindcss/colors'
 
 import { Routes } from './src/routes'
 
@@ -26,9 +28,15 @@ export default function App() {
   }
 
   return (
-    <>
+    <ToastProvider 
+      placement='top'
+      offsetTop={40}
+      textStyle={{ textAlign: 'center' }}
+      successColor={colors.green[600]}
+      dangerColor={colors.red[600]}
+    >
       <Routes />
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
-    </>
+    </ToastProvider>
   )
 }

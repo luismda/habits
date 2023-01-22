@@ -1,6 +1,14 @@
 import { useState } from 'react'
-import { ScrollView, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { 
+  ScrollView, 
+  View, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  ActivityIndicator 
+} from 'react-native'
 import { Feather } from '@expo/vector-icons'
+import { useToast } from 'react-native-toast-notifications'
 import colors from 'tailwindcss/colors'
 
 import { api } from '../lib/axios'
@@ -18,8 +26,11 @@ const availableWeekDays = [
 ]
 
 export function New() {
+  const [isLoading, setIsLoading] = useState(false)
   const [title, setTitle] = useState('')
   const [weekDays, setWeekDays] = useState<number[]>([])
+
+  const toast = useToast()
 
   function handleToggleWeekDay(weekDayIndex: number) {
     if (weekDays.includes(weekDayIndex)) {
@@ -34,12 +45,18 @@ export function New() {
   async function handleCreateNewHabit() {
     try {
       if (!title.trim()) {
-        return Alert.alert('Novo hábito', 'Informe o nome do hábito.')
+        return toast.show('Informe o nome do hábito.', {
+          type: 'danger'
+        })
       }
 
       if (weekDays.length === 0) {
-        return Alert.alert('Novo hábito', 'Escolha pelo menos um dia da semana para esse hábito.')
+        return toast.show('Escolha pelo menos um dia da semana para esse hábito.', {
+          type: 'danger'
+        })
       }
+
+      setIsLoading(true)
 
       await api.post('/habits', {
         title,
@@ -49,11 +66,17 @@ export function New() {
       setTitle('')
       setWeekDays([])
 
-      Alert.alert('Novo hábito', 'Hábito criado com sucesso!')
+      toast.show('Hábito criado com sucesso!', {
+        type: 'success'
+      })
     } catch (error) {
       console.log(error)
 
-      Alert.alert('Ops', 'Não foi possível criar o novo hábito.')
+      toast.show('Não foi possível criar o novo hábito.', {
+        type: 'danger'
+      })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -74,7 +97,7 @@ export function New() {
         </Text>
 
         <TextInput 
-          className="h-12 pl-4 rounded-lg mt-3 text-white bg-zinc-900 border-2 border-zinc-800 focus:border-green-600"
+          className="h-12 pl-4 rounded-lg mt-3 text-white bg-zinc-900 border-2 border-zinc-800 focus:border-violet-600"
           placeholder="ex.: Exercícios, dormir bem, etc..."
           placeholderTextColor={colors.zinc[400]}
           cursorColor={colors.white}
@@ -101,16 +124,24 @@ export function New() {
           activeOpacity={0.7}
           className="w-full h-14 flex-row items-center justify-center bg-green-600 rounded-lg mt-6"
           onPress={handleCreateNewHabit}
+          disabled={isLoading}
+          style={{ opacity: isLoading ? 0.7 : 100 }}
         >
-          <Feather 
-            name="check"
-            size={20}
-            color={colors.white}
-          />
+          {isLoading ? (
+            <ActivityIndicator color={colors.white} />
+          ) : (
+            <>
+              <Feather 
+                name="check"
+                size={20}
+                color={colors.white}
+              />
 
-          <Text className="font-semibold text-base text-white ml-2">
-            Confirmar
-          </Text>
+              <Text className="font-semibold text-base text-white ml-2">
+                Confirmar
+              </Text>
+            </>
+          )}
         </TouchableOpacity>
       </ScrollView>
     </View>

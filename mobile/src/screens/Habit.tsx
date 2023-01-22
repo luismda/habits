@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import { View, ScrollView, Text, Alert } from 'react-native'
+import { View, ScrollView, Text } from 'react-native'
 import { useRoute } from '@react-navigation/native'
 import dayjs from 'dayjs'
 import { clsx } from 'clsx'
+import { useToast } from 'react-native-toast-notifications'
 
 import { api } from '../lib/axios'
 import { generateProgressPercentage } from '../utils/generate-progress-percentage'
@@ -31,6 +32,8 @@ export function Habit() {
   const [dayInfo, setDayInfo] = useState<DayInfo | null>(null)
   const [completedHabits, setCompletedHabits] = useState<string[]>([])
 
+  const toast = useToast()
+
   const route = useRoute()
   const { date } = route.params as HabitParams
 
@@ -57,7 +60,9 @@ export function Habit() {
     } catch (error) {
       console.log(error)
 
-      Alert.alert('Ops', 'Não foi possível carregar os hábitos desse dia.')
+      toast.show('Não foi possível carregar os hábitos desse dia.', {
+        type: 'danger'
+      })
     } finally {
       setIsLoading(false)
     }
@@ -74,7 +79,9 @@ export function Habit() {
       await api.patch(`/habits/${habitId}/toggle`)
     } catch (error) {
       console.log(error)
-      Alert.alert('Ops', 'Não foi possível atualizar o status do hábito.')
+      toast.show('Não foi possível atualizar o status do hábito.', {
+        type: 'danger'
+      })
     }
   }
 

@@ -5,14 +5,14 @@ export function HabitsListEmpty() {
   const { navigate } = useNavigation()
 
   return (
-    <Text className="text-zinc-400 text-base text-center">
-      Você ainda não está monitorando nunhum hábito, {' '}
+    <Text className="text-zinc-400 text-base">
+      Você ainda não está monitorando nunhum hábito, comece {' '}
 
       <Text
         className="text-violet-400 text-base underline active:text-violet-500"
         onPress={() => navigate('new')}
       >
-        comece criando um
+        cadastrando um.
       </Text>
     </Text>
   )
