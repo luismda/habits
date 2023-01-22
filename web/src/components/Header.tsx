@@ -6,6 +6,8 @@ import logoImage from '../assets/logo.svg'
 import { NewHabitForm } from './NewHabitForm'
 
 export function Header() {
+  const currentWidthSize = window.innerWidth
+
   return (
     <div className="w-full max-w-3xl mx-auto flex items-center justify-between"> 
       <img src={logoImage} alt="Habits" />
@@ -16,7 +18,7 @@ export function Header() {
           className="border border-violet-500 font-semibold rounded-lg px-6 py-4 flex items-center gap-3 transition-colors hover:border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-600 focus:ring-offset-2 focus:ring-offset-background"
         >
           <Plus size={20} className="text-violet-500" />
-          Novo hábito
+          {currentWidthSize <= 768 ? 'Novo' : 'Novo hábito'}
         </Dialog.Trigger >
 
         <Dialog.Portal>

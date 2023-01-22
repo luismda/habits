@@ -60,7 +60,7 @@ export function HabitsList({ date, onCompletedChanged }: HabitsListProps) {
     .isBefore(new Date())
 
   return (
-    <div className="mt-6 flex flex-col gap-3">
+    <div className="mt-6 flex flex-col gap-3 max-h-52 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-thumb-rounded-lg">
       {habitsInfo?.possibleHabits.map(habit => {
           return (
             <Checkbox.Root 

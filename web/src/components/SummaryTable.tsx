@@ -30,8 +30,8 @@ export function SummaryTable() {
   }, [])
 
   return (
-    <div className="w-full flex">
-      <div className="grid grid-rows-7 grid-flow-row gap-3">
+    <div className="w-full flex items-start">
+      <div className="grid gap-3 grid-rows-7 grid-flow-row p-2">
         {weekDays.map((weekDay, i) => {
           return (
             <div
@@ -43,8 +43,8 @@ export function SummaryTable() {
           )
         })}
       </div>
-
-      <div className="grid grid-rows-7 grid-flow-col gap-3 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-thumb-rounded-lg">
+ 
+      <div className="grid grid-rows-7 grid-flow-col gap-3 p-2 pb-4 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-thumb-rounded-lg">
         {summary.length > 0 && summaryDates.map(date => {
           const dayInSummary = summary.find(day => {
             return dayjs(date).isSame(day.date, 'day')

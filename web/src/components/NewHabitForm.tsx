@@ -2,6 +2,7 @@ import { useState, FormEvent } from 'react'
 import { Check } from 'phosphor-react'
 import * as Checkbox from '@radix-ui/react-checkbox'
 import { api } from '../lib/axios'
+import { useToast } from '../hooks/useToast'
 
 const availableWeekDays = [
   'Domingo',
@@ -17,22 +18,40 @@ export function NewHabitForm() {
   const [title, setTitle] = useState('')
   const [weekDays, setWeekDays] = useState<number[]>([])
 
+  const { showToast } = useToast()
+
   async function handleCreateNewHabit(event: FormEvent) {
     event.preventDefault()
 
     if (!title || weekDays.length === 0) {
-      return
+      return showToast({
+        type: 'error',
+        title: 'Erro!',
+        description: 'Informe o hábito e pelo menos um dia da semana.'
+      })
     }
 
-    await api.post('/habits', {
-      title,
-      weekDays
-    })
+    try {
+      await api.post('/habits', {
+        title,
+        weekDays
+      })
+  
+      setTitle('')
+      setWeekDays([])
 
-    setTitle('')
-    setWeekDays([])
-
-    alert('Hábito criado com sucesso!')
+      showToast({
+        type: 'success',
+        title: 'Sucesso!',
+        description: 'Hábito criado com sucesso!'
+      })
+    } catch (error) {
+      showToast({
+        type: 'error',
+        title: 'Erro!',
+        description: 'Não foi possível criar o hábito.'
+      })
+    }
   }
 
   function handleToggleWeekDays(weekDay: number) {
