@@ -4,6 +4,8 @@ import { Check } from 'phosphor-react'
 import dayjs from 'dayjs'
 
 import { api } from '../lib/axios'
+import { useToast } from '../hooks/useToast'
+import { Loading } from './Loading'
 
 interface HabitsListProps {
   date: Date
@@ -20,16 +22,31 @@ interface HabitsInfo {
 }
 
 export function HabitsList({ date, onCompletedChanged }: HabitsListProps) {
+  const [isLoading, setIsLoading] = useState(false)
   const [habitsInfo, setHabitsInfo] = useState<HabitsInfo>()
 
+  const { showToast } = useToast()
+
   useEffect(() => {
-    api.get('/day', {
-      params: {
-        date: date.toISOString()
-      }
-    }).then(response => {
-      setHabitsInfo(response.data)
-    })
+    try {
+      setIsLoading(true)
+
+      api.get('/day', {
+        params: {
+          date: date.toISOString()
+        }
+      }).then(response => {
+        setHabitsInfo(response.data)
+      })
+    } catch {
+      showToast({
+        type: 'error',
+        title: 'Ops...',
+        description: 'Não foi possível carregar sua lista de hábitos.'
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }, [])
 
   async function handleToggleHabit(habitId: string) {
@@ -60,8 +77,11 @@ export function HabitsList({ date, onCompletedChanged }: HabitsListProps) {
     .isBefore(new Date())
 
   return (
-    <div className="mt-6 flex flex-col gap-3 max-h-52 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-thumb-rounded-lg">
-      {habitsInfo?.possibleHabits.map(habit => {
+    <div className="mt-6 p-1 flex flex-col gap-3 max-h-44 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-thumb-rounded-lg">
+      {isLoading ? (
+        <Loading className="my-1" />
+      ) : (
+        habitsInfo?.possibleHabits.map(habit => {
           return (
             <Checkbox.Root 
               key={habit.id}
@@ -84,7 +104,8 @@ export function HabitsList({ date, onCompletedChanged }: HabitsListProps) {
               </span>
             </Checkbox.Root>
           )
-      })}
+        })
+      )}
     </div>
   )
 }

@@ -30,7 +30,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
 
     setTimeout(() => {
       setIsOpen(false)
-    }, 5000)
+    }, 6000)
   }
 
   function closeToast() {

@@ -1,8 +1,11 @@
 import { useState, FormEvent } from 'react'
 import { Check } from 'phosphor-react'
 import * as Checkbox from '@radix-ui/react-checkbox'
+import colors from 'tailwindcss/colors'
+
 import { api } from '../lib/axios'
 import { useToast } from '../hooks/useToast'
+import { Loading } from './Loading'
 
 const availableWeekDays = [
   'Domingo',
@@ -15,6 +18,7 @@ const availableWeekDays = [
 ]
 
 export function NewHabitForm() {
+  const [isLoading, setIsLoading] = useState(false)
   const [title, setTitle] = useState('')
   const [weekDays, setWeekDays] = useState<number[]>([])
 
@@ -26,12 +30,14 @@ export function NewHabitForm() {
     if (!title || weekDays.length === 0) {
       return showToast({
         type: 'error',
-        title: 'Erro!',
+        title: 'Ops...',
         description: 'Informe o hábito e pelo menos um dia da semana.'
       })
     }
 
     try {
+      setIsLoading(true)
+
       await api.post('/habits', {
         title,
         weekDays
@@ -42,15 +48,17 @@ export function NewHabitForm() {
 
       showToast({
         type: 'success',
-        title: 'Sucesso!',
+        title: 'Pronto!',
         description: 'Hábito criado com sucesso!'
       })
     } catch (error) {
       showToast({
         type: 'error',
-        title: 'Erro!',
+        title: 'Ops...',
         description: 'Não foi possível criar o hábito.'
       })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -112,9 +120,19 @@ export function NewHabitForm() {
         })}
       </div>
 
-      <button type="submit" className="mt-6 rounded-lg p-4 flex items-center justify-center gap-3 font-semibold transition-colors bg-green-600 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-zinc-900">
-        <Check size={20} weight="bold" />
-        Confirmar
+      <button 
+        type="submit" 
+        disabled={isLoading}
+        className="mt-6 rounded-lg p-4 flex items-center justify-center gap-3 font-semibold transition-colors bg-green-600 hover:bg-green-500 disabled:opacity-70 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-zinc-900"
+      >
+        {isLoading ? (
+          <Loading color={colors.white} size={24} />
+        ) : (
+          <>
+            <Check size={20} weight="bold" />
+            Confirmar
+          </>
+        )}
       </button>
     </form>
   )

@@ -11,9 +11,9 @@ export function Toast() {
     <ToastPrimitive.Provider swipeDirection="right">
       <ToastPrimitive.Root 
         open={isOpen}
-        className={clsx('absolute w-full flex items-center justify-between gap-3 p-5 bg-zinc-900 ring-2 rounded-2xl data-[state=open]:animate-slideIn data-[state=closed]:animate-hide', {
-          'ring-green-600': toastInfo.type === 'success',
-          'ring-red-600': toastInfo.type === 'error'
+        className={clsx('absolute w-full flex items-center justify-between gap-3 p-5 bg-zinc-900 border-b-8 rounded-lg data-[state=open]:animate-slideIn data-[state=closed]:animate-hide', {
+          'border-green-600': toastInfo.type === 'success',
+          'border-red-600': toastInfo.type === 'error'
         })}
       >
         <div>
@@ -21,7 +21,7 @@ export function Toast() {
             {toastInfo.title}
           </ToastPrimitive.Title>
 
-          <ToastPrimitive.Description className="text-zinc-400">
+          <ToastPrimitive.Description className="text-zinc-400 mt-2">
             {toastInfo.description}
           </ToastPrimitive.Description>
         </div>
