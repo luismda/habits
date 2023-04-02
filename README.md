@@ -1,20 +1,19 @@
 # Habits 📋✅
 
-Esse projeto foi construído durante o evento NLW Setup da [Rocketseat](https://github.com/rocketseat-education), que consiste em uma aplicação para o controle de hábitos
-diários, permitindo criar novos hábitos e completá-los a cada dia.
+This project was developed during the event **NLW Setup** of [**Rocketseat**](https://github.com/rocketseat-education), consisting in the application for the controlling of daily habits, allowed create new habits and complete them per day.
 
-A aplicação possuí tanto a versão web quanto a versão mobile, sendo que os dois utilizam de um mesmo backend, que é uma API Rest desenvolvida com Node.
+The application it has web and mobile versions, also a API REST in Node.js consumed by both versions.
 
 #### 📌 Links:
 - [🎨 Figma](https://www.figma.com/file/XFbTEL1zfSZqCGz9Eijd8t/Habits-(i)-(Community)?node-id=6%3A343&t=BpjrK4UKEMoxn65S-0)
 
-#### ⚙ Funcionalidades
-- Criar um novo hábito
-- Escolher a recorrência de um hábito (dias da semana)
-- Marcar e desmarcar um hábito como completo em dia
-- Visualizar a quantidade de hábitos completados em cada dia por meio da representação de cores
+#### ⚙ Functionalities
+- Create a new habit
+- Choice of recurrence of a habit (week days)
+- Check and uncheck a habit as completed in a day
+- Visualize the quantity of completed habits in per day by color representation
 
-#### 🧰 Linguagens e ferramentas
+#### 🧰 Tools
 - JavaScript
 - TypeScript
 - ReactJS
